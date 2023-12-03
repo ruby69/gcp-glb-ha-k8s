@@ -2,42 +2,42 @@
 
 ## Create the VM instance
 In the Google Cloud console, create and start 3 instances for master and 3 instances for worker(Ubuntu 22.04 LTS Minimal).
-![create the VM instance](./images/001.png)
+> ![create the VM instance](./images/001.png)
 
 ## Create Instance Group
 Create a new unmanaged instance group and add only the master-1 instance as a member.
-![Create Instance Group](./images/002.png)
-***
-![Create Instance Group](./images/003.png)
-***
-![Create Instance Group](./images/004.png)
+> ![Create Instance Group](./images/002.png)
+
+> ![Create Instance Group](./images/003.png)
+
+> ![Create Instance Group](./images/004.png)
 
 ## Create a health check
 Create a health check for use by the load balancer.
-![Create a health check](./images/019.png)
+> ![Create a health check](./images/019.png)
 
 ## Create a load balancer
 Create a Network Load Balancer (TCP/SSL) as a Layer 4 then select regional internal proxy load balancer and pass-through type.
-![Create a load balancer](./images/005.png)
+> ![Create a load balancer](./images/005.png)
 
 In the backend configuration, select pre-created a instance group and a status check.
 Specify the IP address and the TCP port 6443 in the frontend configuration to be used by the plane control nodes.
-![Create a load balancer](./images/006.png)
-***
-![Create a load balancer](./images/007.png)
+> ![Create a load balancer](./images/006.png)
+
+> ![Create a load balancer](./images/007.png)
 
 Complete the creation and check the details.
-![Create a load balancer](./images/008.png)  
+> ![Create a load balancer](./images/008.png)  
 
 ## Create a DNS zone
 In the Cloud DNS managed private zone, create custom record set to use more flexible DNS names for the load balancer IP.
-![Create a DNS zone](./images/009.png)
-***
-![Create a DNS zone](./images/010.png)
-***
-![Create a DNS zone](./images/011.png)
-***
-In this example, the DNS name 'k8s-master-lb.some.domain' was used.
+> ![Create a DNS zone](./images/009.png)
+
+> ![Create a DNS zone](./images/010.png)
+
+> ![Create a DNS zone](./images/011.png)
+
+> In this example, the DNS name 'k8s-master-lb.some.domain' was used.
 
 ## Pre-Setting
 All instances including master and worker.
@@ -131,7 +131,7 @@ $ sudo sysctl --system
 ```
 
 ## [Creating Highly Available Clusters with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/)
-![stacked etcd](https://kubernetes.io/images/kubeadm/kubeadm-ha-topology-stacked-etcd.svg)
+> ![stacked etcd](https://kubernetes.io/images/kubeadm/kubeadm-ha-topology-stacked-etcd.svg)
 
 ### [Installing kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
 These instructions are for Kubernetes 1.28:
@@ -180,7 +180,7 @@ master-1:$ mkdir -p $HOME/.kube
 master-1:$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 master-1:$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
-![creating a cluster with kubeadm](./images/012.png)
+> ![creating a cluster with kubeadm](./images/012.png)
 
 ### [Quickstart for Calico on K8s](https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart)
 ```
@@ -196,7 +196,7 @@ $ watch kubectl get pods -n calico-system
 $ nc -v k8s-master-lb.some.domain 6443
 Connection to k8s-master-lb.some.domain 6443 port [tcp/*] succeeded!
 ```
-![info](./images/013.png)
+> ![info](./images/013.png)
 
 ### On the other Master instances(2,3),  join the control-plane node
 ```
@@ -215,8 +215,8 @@ master-3:$ sudo kubeadm join k8s-lb:6443 --token ao655w.uvy196al3fxpk575 \
         --v=10
 ...
 ```
-Run 'kubectl get nodes' on control-plane to see this machine join.<br/>
-![kubectl get nodes](./images/014.png)
+Run 'kubectl get nodes' on control-plane to see this machine join.
+> ![kubectl get nodes](./images/014.png)
 
 ### On all Worker instances(1,2,3), join the worker node.
 ```
@@ -238,12 +238,12 @@ worker-3:$ sudo kubeadm join k8s-master-lb.some.domain:6443 --token 47i1ik.mafrj
         --v=10
 ```
 Run 'kubectl get nodes' on control-plane to see this machine join.
-![kubectl get nodes](./images/018.png)
+> ![kubectl get nodes](./images/018.png)
 
 ## Update Instance Group
 Add master-2 and master-3 instances to the instance group.
-![Update Instance Group](./images/015.png)
-***
-![Update Instance Group](./images/016.png)
-***
-![Update Instance Group](./images/017.png)
+> ![Update Instance Group](./images/015.png)
+
+> ![Update Instance Group](./images/016.png)
+
+> ![Update Instance Group](./images/017.png)
